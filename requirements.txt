@@ -5,3 +5,4 @@ beautifulsoup4
 duckduckgo-search
 python-dotenv
 httpx
+huggingface_hub
