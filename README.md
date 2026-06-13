@@ -1,6 +1,6 @@
-# Telegram AI Assistant Bot
+# 🤖 TeleScout - Applied AI Telegram Bot
 
-An advanced, production-ready Telegram Bot serving as a personal AI assistant, built for the Applied Materials GenAI Infrastructure team take-home exercise.
+An advanced, asynchronous multi-turn Telegram assistant built with Python. Powered by Google Gemini Pro, duckduckgo_search (DDGS), and Hugging Face FLUX.1 image generation fallback mechanics.
 
 ## Core Architecture Overview
 The project follows a strict **Separation of Concerns (Loose Coupling)** architecture:
@@ -8,12 +8,16 @@ The project follows a strict **Separation of Concerns (Loose Coupling)** archite
 - **State Manager Layer:** Handles asynchronous, multi-turn conversation memory per user.
 - **Service Layer:** Independent modules for LLM reasoning, web search pipelines, and image generation.
 
----
 
 ## 🗺️ Project Roadmap
 
 - [x] **Phase 0: Project Initialization & Infrastructure Setup**
 - [x] **Phase 1: Async Conversation State Manager (Multi-turn Memory)**
-- [ ] **Phase 2: Independent AI Services (LLM, DuckDuckGo Deep Search, Image API)**
-- [ ] **Phase 3: Telegram Handlers & Core Integration**
-- [ ] **Phase 4: Live Deployment & Final Documentation**
+- [x] **Phase 2: Independent AI Services (LLM, DuckDuckGo Search, Scraper, Image API)** 
+- [ ] **Phase 3: Telegram Bot API Integration & Command Handlers**
+- [ ] **Phase 4: Advanced Tool Integration & Deployment Execution**
+
+
+
+
+
