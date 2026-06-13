@@ -1,40 +1,34 @@
 import os
 from typing import Optional
-import httpx
+from huggingface_hub import InferenceClient
 
 class HuggingFaceProvider:
     def __init__(self):
         self.api_key = os.getenv("HF_API_KEY")
-        # הכתובת המדויקת והרשמית ישירות מול ה-Endpoint של המודל
-        self.url = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
+        # שימוש בקליינט הרשמי של Hugging Face
+        self.client = InferenceClient(token=self.api_key) if self.api_key else None
 
     async def generate(self, prompt: str) -> Optional[bytes]:
         if not prompt or not prompt.strip():
             return None
 
-        if not self.api_key:
+        if not self.client:
             print("HuggingFaceProvider Status: No HF_API_KEY provided.")
             return None
 
-        # הגדרת ה-Headers בצורה קפדנית כפי שה-API דורש
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
-        payload = {"inputs": prompt.strip()}
-
         try:
-            # שימוש ב-AsyncClient עם טיפול מוגדר בשגיאות
-            async with httpx.AsyncClient(timeout=60.0) as client:
-                response = await client.post(self.url, headers=headers, json=payload)
+            # שליחה ישירה למודל FLUX דרך הצינור הרשמי והמאובטח שלהם
+            image = self.client.image_generation(
+                model="black-forest-labs/FLUX.1-schnell",
+                prompt=prompt.strip()
+            )
+            
+            # המרה של התמונה ל-Bytes (קובץ JPEG)
+            import io
+            img_byte_arr = io.BytesIO()
+            image.save(img_byte_arr, format='JPEG')
+            return img_byte_arr.getvalue()
 
-                if response.status_code == 200:
-                    return response.content
-                
-                print(f"HuggingFaceProvider Status: Restricted or failed (Status {response.status_code})")
-                if response.text:
-                    print(f"Details: {response.text[:100]}")
-                return None
         except Exception as e:
             print(f"HuggingFaceProvider Status: Failed ({str(e)})")
             return None
